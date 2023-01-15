@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
    document.getElementById("submit_button").addEventListener("click", function(event) {
-      document.getElementById("google_title").style.opacity = 0;
-      document.getElementById("yahoo_title").style.opacity = 0;
-      document.getElementById("google_results").innerHTML = "";
-      document.getElementById("yahoo_results").innerHTML = "";
+      resetFields();
       let googleChecked = document.getElementById("google_checkbox").checked;
       let yahooChecked = document.getElementById("yahoo_checkbox").checked;
       let searchQuery = document.getElementById("search_query").value;
@@ -34,8 +31,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             data.searchEngine = "google";
             fetches.push(
                 postData(data).then(data => {
-                    document.getElementById("google_title").style.opacity = 1;
-                    appendCard("google_results", data, i);
+                    document.getElementById("google_card").style.opacity = 1;
+                    document.getElementById("google_card").style.display = "block";
+                    appendResultData("google_results", data);
                     googleSum += data.resultCount;
                 })
             );
@@ -44,29 +42,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
             data.searchEngine = "yahoo";
             fetches.push(
                 postData(data).then(data => {
-                    document.getElementById("yahoo_title").style.opacity = 1;
-                    appendCard("yahoo_results", data, i);
+                    document.getElementById("yahoo_card").style.opacity = 1;
+                    document.getElementById("yahoo_card").style.display = "block";
+                    appendResultData("yahoo_results", data);
                     yahooSum += data.resultCount;
                 })
             );
         }
       }
       Promise.all(fetches).then(function() {
-         appendCard("google_results", {query: "Summary", resultCount: googleSum});
-         appendCard("yahoo_results", {query: "Summary", resultCount: yahooSum});
+         appendResultData("google_summary", {resultCount: googleSum});
+         appendResultData("yahoo_summary", {resultCount: yahooSum});
       });
    })
 
-   function appendCard(elem, data, id) {
-       let cardTitle = data.query == "Summary" ? "Summary: " : "Search query: \"" + data.query + "\"";
-       let cardData = (data.query == "Summary" ? "Total count: " : "Result count: ") + data.resultCount;
-       let divId = elem + id;
-       document.getElementById(elem).innerHTML += "<div class='col-sm-2'><div id="+ divId +" class='card result_card'>" +
-                                                       "<div class='card-body'>" +
-                                                         "<h5 class='card-title'>" + cardTitle + "</h5>" +
-                                                         "<h6 class='card-subtitle mb-2 text-muted'>" + cardData + "</h6>" +
-                                                       "</div></div></div><div class='col-sm-1'></div><br>";
-       document.getElementById(divId).style.opacity = 1;
+   function appendResultData(elem, data) {
+       let formatter = Intl.NumberFormat();
+       let containSearchQuery = data.query == undefined ? false : true;
+       if(containSearchQuery){
+        document.getElementById(elem).innerHTML += data.resultCount.toLocaleString('en-US') + " results for word " + data.query + "<br />";
+       } else {
+        document.getElementById(elem).innerHTML += "Summary: " + data.resultCount.toLocaleString('en-US') + "<br />";
+       }
+
+   }
+
+   function resetFields() {
+       let googleCard = document.getElementById("google_card");
+       googleCard.style.opacity = 0;
+       googleCard.style.display = "none";
+
+       let yahooCard = document.getElementById("yahoo_card");
+       yahooCard.style.opacity = 0;
+       yahooCard.style.display = "none";
+
+       let googleSummary = document.getElementById("google_summary");
+       googleSummary.innerHTML = "";
+       let googleResults = document.getElementById("google_results");
+       googleResults.innerHTML = "";
+       let yahooResults = document.getElementById("yahoo_results");
+       yahooResults.innerHTML = "";
+       let yahooSummary = document.getElementById("yahoo_summary");
+       yahooSummary.innerHTML = "";
    }
 
    async function postData(data) {
@@ -78,5 +95,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
        body: JSON.stringify(data)
      });
      return response.json();
-   }í
+   }
 })
