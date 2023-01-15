@@ -3,7 +3,8 @@
     margin: revert;
 }
 
-#google_title, #yahoo_title{
+#google_card, #yahoo_card{
+    display: none;
     opacity: 0;
     -webkit-transition: opacity 500ms ease-in;
        -moz-transition: opacity 500ms ease-in;
@@ -18,6 +19,10 @@
     width: auto;
 }
 
+#google_summary, #yahoo_summary{
+    text-align: center;
+}
+
 .result_card{
     box-shadow: 5px -5px 10px #888888;
     opacity: 0;
@@ -26,4 +31,21 @@
         -ms-transition: all 500ms ease-in;
          -o-transition: all 500ms ease-in;
             transition: all 500ms ease-in;
+}
+
+.card-img-top {
+    width: 50%!important;
+    margin: auto;
+}
+
+.card {
+    border: 0px!important
+}
+
+#result_container{
+    margin: 20px;
+}
+
+.row {
+    justify-content: center;
 }

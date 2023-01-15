@@ -27,10 +27,26 @@
     <button id="submit_button" class="btn btn-primary">Search</button>
 </div>
 <div id="result_container">
-    <h3 id="google_title" class="title">Google results:</h3>
-    <div id="google_results" class="row justify-content-center"></div><br>
-    <h3 id="yahoo_title" class="title">Yahoo results:</h3>
-    <div id="yahoo_results" class="row justify-content-center"></div><br>
+    <div class="row">
+        <div class="col-sm-6" id="google_card">
+            <div class="card">
+                <img class="card-img-top" src="google_logo.png" alt="Google logo">
+                <div class="card-body">
+                    <p class="card-text" id="google_results"></p>
+                    <h5 class="card-title" id="google_summary"></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6" id="yahoo_card">
+            <div class="card">
+                <img class="card-img-top" src="yahoo_logo.png" alt="Yahoo logo">
+                <div class="card-body">
+                    <p class="card-text" id="yahoo_results"></p>
+                    <h5 class="card-title" id="yahoo_summary"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
